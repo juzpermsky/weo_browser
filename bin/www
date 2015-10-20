@@ -8,24 +8,7 @@ var app = require('../app');
 var debug = require('debug')('untitled5:server');
 var http = require('http');
 
-var pg = require('pg');
-var conString = "postgres://postgres:1Oknenaikul@localhost/weo";
-pg.connect(conString, function(err, client, done) {
-  if(err) {
-    return console.error('error fetching client from pool', err);
-  }
-  client.query('SELECT code from country', function(err, result) {
-    //call `done()` to release the client back to the pool
-    done();
-
-    if(err) {
-      return console.error('error running query', err);
-    }
-    console.log(result.rows.length);
-    //output: 1
-  });
-});
-
+/**
 /**
  * Get port from environment and store in Express.
  */

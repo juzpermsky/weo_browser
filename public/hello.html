@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>hello</title>
+    <link rel="stylesheet" type="text/css" href="stylesheets/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/ui.jqgrid.css">
+    <script type="text/javascript" src="javascripts/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="javascripts/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="javascripts/jquery.jqGrid.min.js"></script>
+    <script type="text/javascript" src="javascripts/grid.locale-en.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            jQuery("#dataTable").jqGrid({
+                url:'getData/KEN/NGDP_D',
+                datatype: "json",
+                colNames:['subject_name','country_name', 'unitscale', 'year', 'value'],
+                colModel:[
+                    {name:'subject_name',index:'subject_name', width:100},
+                    {name:'country_name',index:'country_name', width:100},
+                    {name:'unitscale',index:'unitscale', width:100},
+                    {name:'year',index:'year', width:100},
+                    {name:'value',index:'value', width:100}
+                ],
+                rowNum:10,
+                rowList:[10,20,30],
+                pager: '#pager1',
+                sortname: 'year',
+                viewrecords: true,
+                sortorder: "asc",
+                caption:"weo data"
+            });
+            jQuery("#dataTable").jqGrid('navGrid','#pager1',{edit:false,add:false,del:false});
+
+            $("#country").autocomplete({
+                minLength:0,
+                source: "getCountries",
+                focus: function( event, ui ) {
+                    $("#country").val( ui.item.name );
+                    return false;
+                },
+                select: function( event, ui ) {
+                    $( "#country" ).val( ui.item.name );
+                    $( "#country-iso" ).val( ui.item.iso );
+                    return false;
+                }
+            }).autocomplete( "instance" )._renderItem = function( ul, item ) {
+                return $( "<li>" )
+                        .append( "<a>" + item.name + "</a>" )
+                        .appendTo( ul );
+            };
+
+            $("#subject").autocomplete({
+                minLength:0,
+                source: "getSubjects",
+                focus: function( event, ui ) {
+                    $("#subject").val( ui.item.code );
+                    return false;
+                },
+                select: function( event, ui ) {
+                    $( "#subject" ).val( ui.item.code);
+                    return false;
+                }
+            }).autocomplete( "instance" )._renderItem = function( ul, item ) {
+                return $( "<li>" )
+                        .append( "<a>" + item.code +"<br>"+item.descr+ "</a>" )
+                        .appendTo( ul );
+            };
+        });
+    </script>
+
+</head>
+<body>
+hello man!
+<div>
+<div class="ui-widget">
+    <label for="country">Country: </label>
+    <input id="country">
+</div>
+<div class="ui-widget">
+    <label for="subject">Subject: </label>
+    <input id="subject">
+</div>
+</div>
+
+<div>
+<table id="dataTable"></table>
+<div id="pager1"></div>
+</div>
+</body>
+</html>
