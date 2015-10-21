@@ -11,7 +11,8 @@ router.get('/', function(req, res, next) {
     }
     client.query('select 	code, ' +
                             'descr ' +
-                  'from 	subject',
+                  'from 	subject '+
+                  'where    upper(subject||code) like upper(\'%'+req.query.term+'%\')',
                   function(err, result) {
       //call `done()` to release the client back to the pool
       done();
